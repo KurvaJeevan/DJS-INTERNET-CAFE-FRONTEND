@@ -4,5 +4,5 @@
 // will try to call localhost on the CLIENT's machine, not your server.
 export const environment = {
   production: true,
-  apiUrl: 'https://YOUR-BACKEND-URL.onrender.com/api'
+  apiUrl: 'https://djs-internet-backend.onrender.com'
 };
