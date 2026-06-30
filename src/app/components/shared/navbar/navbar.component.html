@@ -1,0 +1,161 @@
+<ng-container *ngIf="!isHomePage">
+  <button
+    class="mobile-menu-btn"
+    *ngIf="isMobile && isCollapsed"
+    (click)="toggleSidebar()"
+    type="button"
+  >
+    <mat-icon> menu</mat-icon>
+  </button>
+  <nav
+    class="sidebar"
+    [class.collapsed]="isCollapsed"
+    [class.mobile]="isMobile"
+    [class.open]="!isCollapsed"
+  >
+    <!-- Logo doubles as the collapse/expand toggle -->
+    <button
+      class="sidebar-logo"
+      (click)="toggleSidebar()"
+      [matTooltip]="isCollapsed ? 'Expand' : 'Collapse'"
+      matTooltipPosition="right"
+      type="button"
+    >
+      <div class="logo-icon">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="10" fill="url(#lg)" />
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1" />
+              <stop offset="100%" stop-color="#8b5cf6" />
+            </linearGradient>
+          </defs>
+          <rect
+            x="8"
+            y="10"
+            width="24"
+            height="16"
+            rx="3"
+            fill="none"
+            stroke="white"
+            stroke-width="2"
+          />
+          <rect
+            x="12"
+            y="14"
+            width="16"
+            height="8"
+            rx="1"
+            fill="white"
+            opacity="0.3"
+          />
+          <line
+            x1="15"
+            y1="30"
+            x2="25"
+            y2="30"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <line
+            x1="20"
+            y1="26"
+            x2="20"
+            y2="30"
+            stroke="white"
+            stroke-width="2"
+          />
+          <circle cx="20" cy="18" r="2" fill="white" opacity="0.8" />
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">DJS</span>
+        <span class="logo-sub">Internet Cafe</span>
+      </div>
+      <mat-icon class="logo-chevron">{{
+        isCollapsed ? "chevron_right" : "chevron_left"
+      }}</mat-icon>
+    </button>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- Nav items -->
+    <ul class="nav-list">
+      <li *ngFor="let item of navItems">
+        <a
+          class="nav-item"
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          [matTooltip]="item.label"
+          matTooltipPosition="right"
+        >
+          <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+          <span class="nav-label">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Theme toggle -->
+    <div class="sidebar-theme-row">
+      <button
+        class="theme-toggle"
+        (click)="theme.toggle()"
+        matTooltip="Toggle theme"
+        matTooltipPosition="right"
+      >
+        <mat-icon>{{
+          theme.mode() === "dark" ? "light_mode" : "dark_mode"
+        }}</mat-icon>
+      </button>
+      <span class="theme-label">{{
+        theme.mode() === "dark" ? "Dark mode" : "Light mode"
+      }}</span>
+    </div>
+
+    <!-- User footer -->
+    <div class="sidebar-footer" [matMenuTriggerFor]="userMenu">
+      <div class="user-avatar">{{ initial }}</div>
+      <div class="user-info">
+        <div class="user-name">{{ auth.currentUser()?.name || "User" }}</div>
+        <div class="user-role">{{ auth.currentUser()?.role | titlecase }}</div>
+      </div>
+      <mat-icon class="user-menu-icon">expand_more</mat-icon>
+    </div>
+
+    <mat-menu #userMenu="matMenu" xPosition="after" yPosition="above">
+      <a mat-menu-item routerLink="/settings">
+        <mat-icon>settings</mat-icon> Settings
+      </a>
+      <button mat-menu-item (click)="auth.logout()">
+        <mat-icon>logout</mat-icon> Sign Out
+      </button>
+    </mat-menu>
+  </nav>
+
+  <div
+    class="backdrop"
+    *ngIf="isMobile && !isCollapsed"
+    (click)="toggleSidebar()"
+  ></div>
+</ng-container>
+
+<button
+  class="home-signout-btn"
+  *ngIf="isHomePage"
+  [matMenuTriggerFor]="homeUserMenu"
+  matTooltip="Account"
+  matTooltipPosition="left"
+  type="button"
+>
+  <div class="user-avatar">{{ initial }}</div>
+</button>
+
+<mat-menu #homeUserMenu="matMenu" xPosition="before" yPosition="below">
+  <a mat-menu-item routerLink="/settings">
+    <mat-icon>settings</mat-icon> Settings
+  </a>
+  <button mat-menu-item (click)="auth.logout()">
+    <mat-icon>logout</mat-icon> Sign Out
+  </button>
+</mat-menu>

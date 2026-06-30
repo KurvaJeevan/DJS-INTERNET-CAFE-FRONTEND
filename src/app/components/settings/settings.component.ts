@@ -144,12 +144,7 @@ import { ThemeService } from '../../services/theme.service';
           <span class="badge" [class.badge-success]="u.isActive" [class.badge-danger]="!u.isActive">
             {{ u.isActive ? 'Active' : 'Disabled' }}
           </span>
-          <button mat-icon-button (click)="toggleActive(u)" [title]="u.isActive ? 'Disable account' : 'Enable account'">
-            <mat-icon>{{ u.isActive ? 'block' : 'check_circle' }}</mat-icon>
-          </button>
-          <button mat-icon-button (click)="deleteUser(u)" title="Delete account" style="color:var(--accent-danger)" [disabled]="u._id === currentUserId">
-            <mat-icon>delete</mat-icon>
-          </button>
+         
         </div>
       </div>
     </div>
